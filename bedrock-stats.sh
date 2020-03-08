@@ -1,10 +1,11 @@
 #!/bin/bash
 # 2020-03-08 by maniac
 # gather network traffic on Bedrock default port (19132)
+# publish gathered data to /var/log/syslog file (for filebeat ingestion) and if URL variable defined, also to influxdb
 # you can customize additional or other port configuring INPUT variable line simply by modifying the tcpdump pcap filter 
 #
 
-URL="http://127.0.0.1:8086/write?db=opentsdb"	# make sure to configure hostname/IP address of your InfluxDB server here
+URL="http://127.0.0.1:8086/write?db=opentsdb"	# make sure to configure hostname/IP address of your InfluxDB server here. Make empty to skip sending data to influxdb
 AUTH=""						# use -u USER:PASS format (E.g. AUTH="-u mylogin:mypassword)
 INTERFACE="docker0"				# interface we should listen for bedrock traffic (use eth0 if unsure)
 BEDROCKNET="172.17.0.0/24"			# network range of your bedrock server (use this to filter out outgoing traffic from bedrock server as we want to see only incoming traffic)
@@ -37,7 +38,9 @@ while true ; do
     fi
     #echo "DEBUG DATA: $DATA"
     IFS=$NLIFS
-    curl -s $AUTH -X POST --data "$DATA" "$URL"
+    if [ -n "$URL" ] ; then
+      curl -s $AUTH -X POST --data "$DATA" "$URL"
+    fi
   done <<< "$INPUT"
 
   sleep $DELAY
