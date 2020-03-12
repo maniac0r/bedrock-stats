@@ -17,3 +17,5 @@ Representation:
 InfluxDB output Limitations:
 I did not want to use InfluxDB TAGs as number of client IP addresses and their ports can raise uncontrollably during time so all metrics (ip, port and number of packets captured) are stored as series, not tags.
 Therefore if you can, you should use ELK in this case over Influx.
+
+Sample screenshot: ![kibana](screenshots/Screenshot-Kibana.png)
