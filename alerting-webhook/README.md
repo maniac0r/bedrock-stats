@@ -6,5 +6,5 @@ prereqs:
 -  sox
 
 default file locations:
-webhook.conf -> /etc/
-shell scripts -> /home/pi/webhooks/
+- webhook.conf -> /etc/
+- shell scripts -> /home/pi/webhooks/
