@@ -72,7 +72,7 @@ log_parser() {
     [[ "$LINE" =~ $R_DISCONN ]] && ACTION="disconnected" && VALUE=0 #&& echo "DISCONN"
 
     if [ -n "$ACTION" ] ; then
-      PLAYER=$(echo "$LINE" | sed 's/.*connected: //' | sed 's/, xuid.*//')
+      PLAYER=$(echo "$LINE" | sed 's/.*connected: //' | sed 's/, xuid.*//' | sed 's/ /\\ /g')
       XUID=$(echo "$LINE" | sed 's/.*xuid: //')
       TS=$(echo "$LINE" | sed 's/ INFO.*//' | xargs -n1 -I%% date -d 'TZ="UTC" %%' +"%s")	# bedrock provides timestamp in UTC so convert it to local TZ
       #echo "$TS:$ACTION:$PLAYER:$XUID"
